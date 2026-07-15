@@ -9,7 +9,7 @@
  * - wish
  */
 
-const SPREADSHEET_ID = "1WsNJdnLeVIX8ZUAcOROukiP27OeIgZbMLfsCT-HU8JE";
+const SPREADSHEET_ID = "1Sb_wa1RZ3QrMgDAIqvTQPJ0wsdN5hkjQunfT_0M5BUs";
 const RSVP_SHEET_NAME = "rsvp";
 const WISH_SHEET_NAME = "wish";
 
@@ -102,10 +102,10 @@ function saveWish_(params) {
 
 function getSheet_(sheetName) {
   const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sheet = spreadsheet.getSheetByName(sheetName);
+  let sheet = spreadsheet.getSheetByName(sheetName);
 
   if (!sheet) {
-    throw new Error("Sheet not found: " + sheetName);
+    sheet = spreadsheet.insertSheet(sheetName);
   }
 
   return sheet;

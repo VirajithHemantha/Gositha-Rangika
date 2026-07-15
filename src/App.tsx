@@ -12,8 +12,8 @@ import { useInView } from 'react-intersection-observer';
 
 const brideGroomImage = "/DSC00263_1.jpg.jpeg";
 const secondaryImage = "/DSC05289_1.jpg.jpeg";
-const backgroundMusic = "/ama_anjana_flute.mp3";
-const googleScriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL?.trim() || "";
+const backgroundMusic = "/Die With A Smile - Lady Gaga.mp3";
+const googleScriptUrl = "https://script.google.com/macros/s/AKfycbw_oRwn9Eh3_XN4hMmOBlLMRSB1gpUesbjew2P9ZWtwNWHTIY4xnZjVv__WEHFrYPnVFw/exec";
 
 /** iOS / Android block unmuted autoplay; iPadOS may report as MacIntel. */
 function isLikelyMobileOrTablet() {
@@ -518,12 +518,19 @@ export default function WeddingInvitation() {
 
   // --- Personalization Logic ---
   const [guestName, setGuestName] = useState<string | null>(null);
+  const [guestPrefix, setGuestPrefix] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const prefix = params.get("prefix");
+    const name = params.get("name");
     const to = params.get("to");
-    if (to) {
-      setGuestName(to.replace(/_/g, " ")); // Replace underscores with spaces for cleaner URLs
+    
+    if (prefix && name) {
+      setGuestPrefix(prefix);
+      setGuestName(name.replace(/_/g, " "));
+    } else if (to) {
+      setGuestName(to.replace(/_/g, " "));
     }
   }, []);
   // -----------------------------
@@ -866,9 +873,19 @@ export default function WeddingInvitation() {
                   <p className="tracking-[0.4em] md:tracking-[0.7em] text-[#d4af37] text-[9px] md:text-[12px] uppercase font-montserrat font-bold drop-shadow-sm">
                     TOGETHER WITH THEIR FAMILIES
                   </p>
-                  <p className="text-slate-500 font-serif text-[15px] md:text-[22px] italic tracking-wide mt-6 mb-2 uppercase">
-                    WARMLY REQUEST THE PLEASURE OF THE COMPANY OF MISS/MR/MRS AT THEIR WEDDING
-                  </p>
+                  <div className="text-slate-500 font-serif text-[15px] md:text-[22px] italic tracking-wide mt-6 mb-2 uppercase leading-relaxed w-full px-4">
+                    {guestName ? (
+                      <>
+                        WARMLY REQUEST THE PLEASURE OF YOUR COMPANY,
+                        <span className="text-[#d4af37] font-bold tracking-[0.2em] text-[20px] md:text-[32px] block my-6 border-y border-[#d4af37]/30 py-4 bg-gradient-to-r from-transparent via-[#d4af37]/5 to-transparent not-italic drop-shadow-md">
+                          {guestPrefix ? `${guestPrefix} ` : ''}{guestName}
+                        </span>
+                        AT OUR WEDDING
+                      </>
+                    ) : (
+                      <p>WARMLY REQUEST THE PLEASURE OF THE COMPANY OF MISS/MR/MRS AT OUR WEDDING</p>
+                    )}
+                  </div>
                   <div className="h-[0.5px] w-24 bg-[#d4af37]/50 mt-6" />
                 </motion.div>
 
@@ -1103,7 +1120,7 @@ export default function WeddingInvitation() {
 
                       <div className="flex items-center justify-center gap-4 w-full mb-8">
                         <div className="h-[0.5px] w-full bg-[#d4af37]/40" />
-                        <h3 className="font-script text-5xl md:text-7xl text-gold-gradient whitespace-nowrap leading-[0.8] drop-shadow-sm px-2">
+                        <h3 className="font-script text-5xl md:text-7xl text-gold-gradient whitespace-nowrap leading-normal py-4 drop-shadow-sm px-2">
                           R.S.V.P
                         </h3>
                         <div className="h-[0.5px] w-full bg-[#d4af37]/40" />
